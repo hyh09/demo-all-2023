@@ -1,0 +1,16 @@
+server:
+  port: 8076
+spring:
+  application:
+    name: huyunhui-eureka
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    eureka-server-u-r-l-context: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    eviction-interval-timer-in-ms: 2000 # 剔除失效服务间隔
+    enable-self-preservation: false # 关闭保护机制
+  ####注参考： https://projects.spring.io/spring-cloud/docs/1.0.3/spring-cloud.html#_standalone_mode
