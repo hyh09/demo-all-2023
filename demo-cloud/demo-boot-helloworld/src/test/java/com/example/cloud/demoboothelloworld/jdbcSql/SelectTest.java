@@ -3,7 +3,11 @@ package com.example.cloud.demoboothelloworld.jdbcSql;
 
 import com.example.cloud.demoboothelloworld.jdbcSql.annotation.AssembleSql;
 import com.example.cloud.demoboothelloworld.jdbcSql.entity.UserEntity;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * @Project Name: demo-all
@@ -22,6 +26,24 @@ public class SelectTest {
         userEntity.setName("孙悟空");
         AssembleSql assembleSql1 = AssembleSql.buildSql(userEntity);
         System.out.println(assembleSql1);
+    }
+
+
+    /**
+     * * INSERT INTO public."TEST_USER"
+     * * (user_name, role_name)
+     * * VALUES('', '')
+     */
+    @Test
+    public void listToString() {
+        List<String> stringList = new ArrayList<>();
+        stringList.add("user_name");
+        stringList.add("user_code");
+        String fieldStr = String.join(":", stringList);
+        StringJoiner result = new StringJoiner(",", "(", ")");
+        result.add(fieldStr);
+        System.out.println(result.toString());
+
     }
 
 

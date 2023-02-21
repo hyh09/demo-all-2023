@@ -3,6 +3,8 @@ package com.example.cloud.demoboothelloworld.jdbcSql.entity;
 
 import com.example.cloud.demoboothelloworld.jdbcSql.annotation.SqlColumnAnnotation;
 import com.example.cloud.demoboothelloworld.jdbcSql.annotation.SqlOnFromTableAnnotation;
+import com.example.cloud.demoboothelloworld.jdbcSql.annotation.singleTable.SingleColumn;
+import com.example.cloud.demoboothelloworld.jdbcSql.annotation.singleTable.SingleTableName;
 import lombok.Data;
 import lombok.ToString;
 
@@ -17,11 +19,14 @@ import lombok.ToString;
 @Data
 @ToString
 @SqlOnFromTableAnnotation(from = "  tb_user t1 left JOIN hs_user_extension h1 on t1.id = h1.id   ", whereValue = " 1=1 ")
+@SingleTableName(name = "test_user")
 public class UserEntity {
 
     @SqlColumnAnnotation(name = "h1.user_name", queryWhere = " h1.user_name = (:name)")
+    @SingleColumn(name = "user_name", updatable = false, insertable = false)
     private String name;
 
     @SqlColumnAnnotation(name = "h1.phone_number", queryWhere = "")
+    @SingleColumn(name = "role_name")
     private String phone;
 }
