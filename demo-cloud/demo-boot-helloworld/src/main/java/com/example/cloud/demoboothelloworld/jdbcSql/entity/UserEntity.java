@@ -18,15 +18,21 @@ import lombok.ToString;
  */
 @Data
 @ToString
-@SqlOnFromTableAnnotation(from = "  tb_user t1 left JOIN hs_user_extension h1 on t1.id = h1.id   ", whereValue = " 1=1 ")
+@SqlOnFromTableAnnotation(from = " ( SELECT A.sOrderNo,tTime=MAX(CONVERT(NVARCHAR(10),C.tUpdateTime,120))\n" +
+        "FROM dbo.sdOrderHdr A(NOLOCK)\n" +
+        "JOIN dbo.sdOrderDtl B(NOLOCK) ON B.usdOrderHdrGUID=A.uGUID\n" +
+        "JOIN dbo.sdOrderLot C(NOLOCK) ON C.usdOrderDtlGUID = B.uGUID AND C.sLotStatus='完成' \n" +
+        "LEFT JOIN dbo.sdOrderLot D(NOLOCK) ON D.usdOrderDtlGUID = B.uGUID AND D.sLotStatus='生产' \n" +
+        "WHERE D.uGUID IS NULL\n" +
+        "GROUP BY A.sOrderNo\n" +
+        "HAVING MAX(C.tUpdateTime)>=DATEADD(DAY,-7,CONVERT(NVARCHAR(10),GETDATE(),120))  )A1 ", groupByLast = " GROUP BY A1.tTime ")
 @SingleTableName(name = "test_user")
 public class UserEntity {
 
-    @SqlColumnAnnotation(name = "h1.user_name", queryWhere = " h1.user_name = (:name)")
-    @SingleColumn(name = "user_name", updatable = false, insertable = false)
+    @SqlColumnAnnotation(name = "A1.tTime")
     private String name;
 
-    @SqlColumnAnnotation(name = "h1.phone_number", queryWhere = "")
+    @SqlColumnAnnotation(name = "COUNT(1) ", queryWhere = "")
     @SingleColumn(name = "role_name")
     private String phone;
 }

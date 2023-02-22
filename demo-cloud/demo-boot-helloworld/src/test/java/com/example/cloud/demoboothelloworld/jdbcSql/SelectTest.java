@@ -5,6 +5,7 @@ import com.example.cloud.demoboothelloworld.jdbcSql.annotation.AssembleSql;
 import com.example.cloud.demoboothelloworld.jdbcSql.entity.UserEntity;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -43,6 +44,16 @@ public class SelectTest {
         StringJoiner result = new StringJoiner(",", "(", ")");
         result.add(fieldStr);
         System.out.println(result.toString());
+
+    }
+
+
+    @Test
+    public void dateaTest() {
+        LocalDate date = LocalDate.parse("2017-02-03");
+        System.out.println(date.minusDays(2));//2017-02-01
+        System.out.println(date.minusDays(-2));//2017-02-01
+
 
     }
 
