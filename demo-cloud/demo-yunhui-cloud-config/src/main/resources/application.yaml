@@ -15,11 +15,12 @@ spring:
           # 如果Git仓库为公开仓库，可以不填写用户名和密码，如果是私有仓库需要填写
           username: 455663056@qq.com
           password: ustc@2016
+          default-label: master
       #分支名
       label: master
   ##### RabbitMQ 相关配置，15672 是web 管理界面的端口，5672 是 MQ 的访问端口###########
   rabbitmq:
-    host: 127.0.0.1
+    host: 192.168.110.100
     port: 5672
     username: guest
     password: guest
@@ -29,7 +30,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: 'bus-refresh'
+        include: '*'
 #eureka:
 #  client: #将客户端注册到 eureka 服务列表内
 #    service-url:

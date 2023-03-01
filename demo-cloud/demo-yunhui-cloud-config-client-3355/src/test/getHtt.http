@@ -1,0 +1,13 @@
+POST http://localhost:80/api/item
+Content-Type: application/json
+
+{}
+
+###
+### GET request with dynamic variables
+GET http://localhost:3355/getConfig
+
+###3344
+POST http://localhost:3344/actuator/bus-refresh
+
+###
