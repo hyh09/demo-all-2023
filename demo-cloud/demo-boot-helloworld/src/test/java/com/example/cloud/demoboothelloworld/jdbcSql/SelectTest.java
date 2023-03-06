@@ -3,10 +3,16 @@ package com.example.cloud.demoboothelloworld.jdbcSql;
 
 import com.example.cloud.demoboothelloworld.jdbcSql.annotation.AssembleSql;
 import com.example.cloud.demoboothelloworld.jdbcSql.entity.UserEntity;
+import com.example.cloud.demoboothelloworld.jdbcSql.util.DateLocaDateAndTimeUtil;
+import com.example.cloud.demoboothelloworld.vo.MesBoardCapacityTrendItemVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -137,5 +143,21 @@ public class SelectTest {
 
 
     }
+
+    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    @Test
+    public void Test0001() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, JsonProcessingException {
+        List<MesBoardCapacityTrendItemVO> list = new ArrayList<>();
+        list.add(MesBoardCapacityTrendItemVO.builder().xValue("2023-03-06").yValue(null).build());
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(7);
+        List<MesBoardCapacityTrendItemVO> resultList = DateLocaDateAndTimeUtil.INSTANCE.completionTime(list, startDate, endDate,
+                "0", MesBoardCapacityTrendItemVO.class, "xValue", "yValue");
+//        System.out.println("resultList" + resultList);
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(" mapper.writeValueAsString(fruit):" + mapper.writeValueAsString(resultList));
+    }
+
 
 }
