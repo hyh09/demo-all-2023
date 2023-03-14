@@ -1,8 +1,6 @@
 package com.example.cloud.demoboothelloworld.jdbcSql;
 
 
-import com.example.cloud.demoboothelloworld.jdbcSql.annotation.AssembleSql;
-import com.example.cloud.demoboothelloworld.jdbcSql.entity.UserEntity;
 import com.example.cloud.demoboothelloworld.jdbcSql.util.DateLocaDateAndTimeUtil;
 import com.example.cloud.demoboothelloworld.vo.MesBoardCapacityTrendItemVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,10 +26,18 @@ public class SelectTest {
     @Test
     public void Test01() {
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setName("孙悟空");
-        AssembleSql assembleSql1 = AssembleSql.buildSql(userEntity);
-        System.out.println(assembleSql1);
+        List<String> stringList = new ArrayList<>();
+        stringList.add("user_name");
+        stringList.add("user_code");
+        stringList.add("user_id");
+        stringList.stream().forEach(m1 -> {
+            if (m1.equals("user_name")) {
+                System.out.println("user_name跳出，执行return");
+                return;
+            }
+            System.out.println("=====>普通");
+        });
+
     }
 
 
