@@ -1,16 +1,12 @@
 package com.example.all.democommonutiljwt.jdk8;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
+import java.util.Optional;
 
 /**
  * @Project Name: demo-all
@@ -23,25 +19,64 @@ import static java.util.stream.Collectors.toList;
 public class SortedDemoTest {
 
     @Test
-    public void lowCaloricDishesName() {
-        List<Dishes> inventory = Arrays.asList(new Dishes(80, "fish"), new Dishes(500, "meat"), new Dishes(65, "tofu"));
-        List<String> lowCaloricDishesName =
-                inventory.parallelStream()
-                        .filter(d -> d.getCalories() < 400)
-                        .sorted(comparing(Dishes::getCalories))
-                        .map(Dishes::getName)
-                        .collect(toList());
-        System.out.println(lowCaloricDishesName);
+    public void mainTest() {
+        if (isVegetarianFriendlyMenu()) {
+            System.out.println("Vegetarian friendly");
+        }
 
+        System.out.println(isHealthyMenu());
+        System.out.println(isHealthyMenu2());
+
+        Optional<Dish> dish = findVegetarianDish();
+        dish.ifPresent(d -> System.out.println(d.getName()));
     }
 
+    private boolean isVegetarianFriendlyMenu() {
+        return menu.stream().anyMatch(Dish::isVegetarian);
+    }
+
+    private boolean isHealthyMenu() {
+        return menu.stream().allMatch(d -> d.getCalories() < 1000);
+    }
+
+    private boolean isHealthyMenu2() {
+        return menu.stream().noneMatch(d -> d.getCalories() >= 1000);
+    }
+
+    private Optional<Dish> findVegetarianDish() {
+        return menu.stream().filter(Dish::isVegetarian).findAny();
+    }
 
     @Data
     @ToString
-    @AllArgsConstructor
-    @NoArgsConstructor
-    class Dishes {
-        private int calories;
-        private String name;
+    static
+    class Dish {
+
+        private final String name;
+        private final boolean vegetarian;
+        private final int calories;
+        private final Type type;
+
+        public Dish(String name, boolean vegetarian, int calories, Type type) {
+            this.name = name;
+            this.vegetarian = vegetarian;
+            this.calories = calories;
+            this.type = type;
+        }
+
+        public enum Type {MEAT, FISH, OTHER}
     }
+
+
+    public List<Dish> menu =
+            Arrays.asList(new Dish("pork", false, 800, Dish.Type.MEAT),
+                    new Dish("beef", false, 700, Dish.Type.MEAT),
+                    new Dish("chicken", false, 400, Dish.Type.MEAT),
+                    new Dish("french fries", true, 530, Dish.Type.OTHER),
+                    new Dish("rice", true, 350, Dish.Type.OTHER),
+                    new Dish("season fruit", true, 120, Dish.Type.OTHER),
+                    new Dish("pizza", true, 550, Dish.Type.OTHER),
+                    new Dish("prawns", false, 400, Dish.Type.FISH),
+                    new Dish("salmon", false, 450, Dish.Type.FISH));
+
 }
